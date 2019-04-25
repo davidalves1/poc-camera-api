@@ -7,10 +7,10 @@
     <div class="box" style="text-align: left">
       <ul>
         <li v-for="(c, i) in cameras" :key="i">
-          -> {{ c.deviceId }} - {{ c.kind }}
+          -> {{ c.kind }}
         </li>
       </ul>
-      <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
+      <canvas ref="canvas" id="canvas"></canvas>
       <ul>
         <li v-for="(capture, i) in captures" :key="i">
           <img :src="capture" height="50"/>
