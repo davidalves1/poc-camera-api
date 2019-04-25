@@ -51,6 +51,10 @@ export default {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+
+    @media all and (min-width: 768px) {
+      flex-direction: row;
+    }
   }
   .box {
     display: flex;
