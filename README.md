@@ -1,4 +1,4 @@
-# dinheirow-poc-camera
+# poc-camera-api
 
 ## Project setup
 ```
