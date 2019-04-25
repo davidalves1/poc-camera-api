@@ -6,8 +6,10 @@
     </div>
     <div class="box" style="text-align: left">
       <select name="cameras" v-model="selectedCamera" @change="changeCamera">
-        <option value="">Selecione</option>
-        <option v-for="(camera, index) in cameras" :value="camera.deviceId" :key="index">Camera {{ index + 1}}</option>
+        <option value="environment" selected>Câm. traseira</option>
+        <option value="user">Câm. frontal</option>
+        <!-- <option v-for="(camera, index) in cameras" :value="camera.deviceId" :key="index">Camera {{ index + 1}}</option> -->
+
       </select>
       <canvas ref="canvas" id="canvas"></canvas>
       <ul>
@@ -29,7 +31,7 @@ export default {
   data: () => ({
     // fancingMode: 'environment',
     cameras: [],
-    selectedCamera: '',
+    selectedCamera: 'environment',
     currentStream: '',
     video: {},
     canvas: {},
@@ -72,7 +74,8 @@ export default {
 
       if (selectedCamera) {
         options.video = {
-          deviceId: { exact: selectedCamera },
+          // deviceId: { exact: selectedCamera },
+          facingMode: selectedCamera,
         }
       }
 
