@@ -4,7 +4,12 @@
       <video ref="video" id="video" width="640" height="480" autoplay></video>
       <button id="snap" @click="capture">Snap Photo</button>
     </div>
-    <div class="box">
+    <div class="box" style="text-align: left">
+      <ul>
+        <li v-for="(c, i) in cameras" :key="i">
+          -> {{ c.deviceId }} - {{ c.kind }}
+        </li>
+      </ul>
       <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
       <ul>
         <li v-for="(capture, i) in captures" :key="i">
@@ -23,6 +28,7 @@ export default {
   name: 'home',
   components: {},
   data: () => ({
+    cameras: [],
     video: {},
     canvas: {},
     captures: [],
@@ -30,6 +36,11 @@ export default {
   mounted() {
     this.video = this.$refs.video;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+          console.log(devices);
+          this.cameras = devices;
+        });
       navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
         this.video.srcObject = stream;
         this.video.play();
@@ -39,7 +50,7 @@ export default {
   methods: {
     capture() {
       this.canvas = this.$refs.canvas;
-      const context = this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
+      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
       this.captures.push(canvas.toDataURL('image/png'));
     },
   },
@@ -73,7 +84,7 @@ export default {
     display: none;
   }
   li {
-    display: inline;
+    // display: inline;
     padding: 5px;
   }
   button {
