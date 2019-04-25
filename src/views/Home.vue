@@ -5,11 +5,10 @@
       <button id="snap" @click="capture">Snap Photo</button>
     </div>
     <div class="box" style="text-align: left">
-      <ul>
-        <li v-for="(c, i) in cameras" :key="i">
-          -> {{ c.kind }}
-        </li>
-      </ul>
+      <select name="cameras" v-model="selectedCamera" @change="changeCamera">
+        <option value="">Selecione</option>
+        <option v-for="(camera, index) in cameras" :value="camera.deviceId" :key="index">Camera {{ index + 1}}</option>
+      </select>
       <canvas ref="canvas" id="canvas"></canvas>
       <ul>
         <li v-for="(capture, i) in captures" :key="i">
@@ -28,7 +27,10 @@ export default {
   name: 'home',
   components: {},
   data: () => ({
+    // fancingMode: 'environment',
     cameras: [],
+    selectedCamera: '',
+    currentStream: '',
     video: {},
     canvas: {},
     captures: [],
@@ -38,13 +40,11 @@ export default {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.enumerateDevices()
         .then(devices => {
-          console.log(devices);
-          this.cameras = devices;
+          this.cameras = devices.filter(device => {
+            return device.kind === 'videoinput';
+          });
         });
-      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-        this.video.srcObject = stream;
-        this.video.play();
-      });
+      this.setCurrentCamera();
     }
   },
   methods: {
@@ -53,6 +53,48 @@ export default {
       this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
       this.captures.push(canvas.toDataURL('image/png'));
     },
+    changeCamera() {
+      // console.log(`Você selecionou o device: ${this.selectedCamera}`);
+      // this.video.stop();
+      this.stopMediaTracks();
+      this.setCurrentCamera();
+    },
+    setCurrentCamera() {
+      const {
+        selectedCamera,
+        video
+      } = this;
+
+      const options = {
+        video: true,
+        audio: false
+      }
+
+      if (selectedCamera) {
+        options.video = {
+          deviceId: { exact: selectedCamera },
+        }
+      }
+
+      if (video) {
+        navigator.mediaDevices.getUserMedia(options).then((stream) => {
+          this.currentStream = stream;
+          this.video.srcObject = stream;
+          this.video.play();
+        });
+      }
+    },
+    stopMediaTracks() {
+      const {
+        currentStream
+      } = this;
+
+      if (currentStream) {
+        this.currentStream.getTracks().forEach(track => {
+          track.stop();
+        });
+      }
+    }
   },
 };
 </script>
