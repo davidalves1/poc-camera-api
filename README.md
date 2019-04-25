@@ -1,5 +1,7 @@
 # poc-camera-api
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/38e52b91-c06f-452e-ae61-6b0ca413863f/deploy-status)](https://app.netlify.com/sites/poc-camera-api/deploys)
+
 ## Project setup
 ```
 yarn install
