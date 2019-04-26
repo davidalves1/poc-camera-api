@@ -1,17 +1,11 @@
 <template>
   <div class="home">
     <div class="box">
-      <svg width="100%" height="100vh">
+      <svg id="svgLayer" width="320" height="400">
         <mask id="maskLayer">
           <rect width="100%" height="100%" fill="#fff" style="opacity: .8;"></rect>
           <!-- <text x="8%" y="55%" id="info">DAFT CREATION</text> -->
-          <rect
-            id="document-model"
-            width="70%"
-            height="30%"
-            x="15%"
-            y="35%"
-          />
+          <rect id="document-model" width="70%" height="30%" x="15%" y="35%"></rect>
         </mask>
 
         <rect id="masked" width="100%" height="100%" fill="#fff"></rect>
@@ -42,7 +36,7 @@ export default {
     currentStream: false,
     video: {},
     canvas: {},
-    image: '',
+    image: ''
   }),
   mounted() {
     this.video = this.$refs.video;
@@ -61,25 +55,26 @@ export default {
       this.setCurrentCamera();
     },
     setCurrentCamera() {
-      const {
-        selectedCamera,
-        video
-      } = this;
+      const { selectedCamera, video } = this;
 
       const options = {
         video: true,
         audio: false
-      }
+      };
 
       if (selectedCamera) {
         options.video = {
           // deviceId: { exact: selectedCamera },
-          facingMode: selectedCamera,
-        }
+          facingMode: selectedCamera
+        };
       }
 
-      if (video && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia(options).then((stream) => {
+      if (
+        video &&
+        navigator.mediaDevices &&
+        navigator.mediaDevices.getUserMedia
+      ) {
+        navigator.mediaDevices.getUserMedia(options).then(stream => {
           this.currentStream = stream;
           this.video.srcObject = stream;
           this.video.play();
@@ -87,9 +82,7 @@ export default {
       }
     },
     stopMediaTracks() {
-      const {
-        currentStream
-      } = this;
+      const { currentStream } = this;
 
       if (currentStream) {
         this.currentStream.getTracks().forEach(track => {
@@ -102,60 +95,60 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .home {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+.home {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 
-    @media all and (min-width: 768px) {
-      flex-direction: row;
-    }
+  @media all and (min-width: 768px) {
+    flex-direction: row;
   }
-  .box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 10px 0;
-    box-sizing: border-box;
-  }
+}
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+  box-sizing: border-box;
+  background-color: cadetblue;
+}
 
-  #video {
-    background-color: #eee;
-    width: 320px;
-    height: 480px;
-    position: absolute;
-    z-index: -1;
+#video {
+  background-color: #eee;
+  width: 320px;
+  height: 400px;
+  position: absolute;
+}
 
-    @media screen and (min-width: 768px) {
-      position: static;
-    }
-  }
+#document-model {
+  fill: #000;
+  stroke: #fff;
+  stroke-width: 3;
+  border-radius: 3px;
+}
 
-  #document-model {
-    fill:#000;
-    stroke:#fff;
-    stroke-width:3;
-    border-radius: 3px;
-  }
+#svgLayer {
+  z-index: 1;
+}
 
-  #masked{
-    mask:url("#maskLayer");
-  }
+#masked {
+  mask: url("#maskLayer");
+}
 
-  #canvas {
-    // display: none;
-    width: 100%;
-    height: 480px;
-    background-color: #eee;
-  }
+#canvas {
+  // display: none;
+  width: 100%;
+  height: 480px;
+  background-color: #eee;
+}
 
-  li {
-    display: inline;
-    padding: 5px;
-  }
+li {
+  display: inline;
+  padding: 5px;
+}
 
-  button {
-    margin: 1rem auto;
-  }
+button {
+  margin: 1rem auto;
+}
 </style>
