@@ -111,7 +111,7 @@ export default {
   width: 100%;
   margin: 10px 0;
   box-sizing: border-box;
-  background-color: cadetblue;
+  // background-color: cadetblue;
 }
 
 #video {
