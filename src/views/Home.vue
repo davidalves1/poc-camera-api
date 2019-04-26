@@ -120,11 +120,13 @@ export default {
       }
     },
     async send() {
-      const {
-        image: base64Img
-      } = this;
-
       try {
+        const {
+          image: base64Img
+        } = this;
+
+        this.loading = true;
+
         const blob = this.blobTransform(base64Img);
 
         const formData = new FormData();
@@ -138,6 +140,8 @@ export default {
         alert('Imagem enviada com sucesso!');
       } catch (err) {
         alert('Ops, deu erro! :(')
+      } finally {
+        this.loading = false;
       }
     },
     blobTransform(base64Img) {
