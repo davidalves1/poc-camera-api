@@ -11,11 +11,14 @@
         <rect id="masked" width="100%" height="100%" fill="#fff"></rect>
       </svg>
       <video ref="video" id="video" width="800" height="600" autoplay></video>
-      <button id="snap" @click="capture">Snap Photo</button>
-      <select name="cameras" v-model="selectedCamera" @change="changeCamera">
-        <option value="environment" selected>Câm. traseira</option>
-        <option value="user">Câm. frontal</option>
-      </select>
+      <div class="controls">
+        <select name="cameras" v-model="selectedCamera" @change="changeCamera">
+          <option value="environment" selected>Câm. traseira</option>
+          <option value="user">Câm. frontal</option>
+        </select>
+        <button id="snap" @click="capture">Capturar</button>
+        <button id="send" @click="send" :disabled="image === ''">Enviar</button>
+      </div>
     </div>
     <div class="box">
       <canvas ref="canvas" id="canvas" width="800" height="600"></canvas>
@@ -26,6 +29,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue';
+import { storeImage } from '@/services/api';
 
 export default {
   name: 'home',
@@ -89,6 +93,40 @@ export default {
           track.stop();
         });
       }
+    },
+    async send() {
+      const {
+        image: base64Img
+      } = this;
+
+      try {
+        const blob = this.blobTransform(base64Img);
+
+        const formData = new FormData();
+
+        formData.set('image', blob, `cnh_rg_frente.jpg`);
+        formData.set('type', 1);
+        formData.set('variation', 'CNH');
+
+        const response = await storeImage(formData);
+
+        alert('Imagem enviada com sucesso!');
+      } catch (err) {
+        console.error;
+      }
+    },
+    blobTransform(base64Img) {
+      const imgArr = base64Img.split(',');
+
+      const byteString = atob(imgArr[1]);
+      const mimeString = imgArr[0].split(':')[1].split(';')[0];
+      const ia = new Uint8Array(byteString.length);
+
+      for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+
+      return new Blob([ia], {type:mimeString});
     }
   },
 };
@@ -104,6 +142,7 @@ export default {
     flex-direction: row;
   }
 }
+
 .box {
   display: flex;
   flex-direction: column;
@@ -111,7 +150,6 @@ export default {
   width: 100%;
   margin: 10px 0;
   box-sizing: border-box;
-  // background-color: cadetblue;
 }
 
 #video {
@@ -138,8 +176,8 @@ export default {
 
 #canvas {
   // display: none;
-  width: 100%;
-  height: 480px;
+  width: 480px;
+  height: 320px;
   background-color: #eee;
 }
 
@@ -148,7 +186,18 @@ li {
   padding: 5px;
 }
 
-button {
-  margin: 1rem auto;
+button, select {
+  margin: 1rem .5rem 1rem auto;
+  height: 2rem;
+  background-color: #009688;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ddd;
+  color: #333;
 }
 </style>
