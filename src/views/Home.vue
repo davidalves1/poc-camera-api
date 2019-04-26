@@ -10,19 +10,17 @@
             width="70%"
             height="30%"
             x="15%"
-            y="10%"
+            y="35%"
           />
         </mask>
 
-        <rect id="masked" width="100%" height="100%" fill="#f5f5f5"></rect>
+        <rect id="masked" width="100%" height="100%" fill="#fff"></rect>
       </svg>
       <video ref="video" id="video" width="800" height="600" autoplay></video>
       <button id="snap" @click="capture">Snap Photo</button>
       <select name="cameras" v-model="selectedCamera" @change="changeCamera">
         <option value="environment" selected>Câm. traseira</option>
         <option value="user">Câm. frontal</option>
-        <!-- <option v-for="(camera, index) in cameras" :value="camera.deviceId" :key="index">Camera {{ index + 1}}</option> -->
-
       </select>
     </div>
     <div class="box">
@@ -118,13 +116,13 @@ export default {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 10px;
+    margin: 10px 0;
     box-sizing: border-box;
   }
 
   #video {
     background-color: #eee;
-    width: 100%;
+    width: 320px;
     height: 480px;
     position: absolute;
     z-index: -1;
