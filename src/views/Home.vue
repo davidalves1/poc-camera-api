@@ -112,7 +112,7 @@ export default {
 
         alert('Imagem enviada com sucesso!');
       } catch (err) {
-        console.error;
+        alert('Ops, deu erro! :(')
       }
     },
     blobTransform(base64Img) {
