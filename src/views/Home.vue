@@ -10,7 +10,7 @@
 
         <rect id="masked" width="100%" height="100%" fill="#fff"></rect>
       </svg>
-      <video ref="video" id="video" width="800" height="600" autoplay></video>
+      <video ref="video" id="video" width="768" height="1024" autoplay></video>
       <div class="controls">
         <select name="cameras" v-model="selectedCamera" @change="changeCamera">
           <option value="environment" selected>Câm. traseira</option>
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="box">
-      <canvas ref="canvas" id="canvas" width="800" height="600"></canvas>
+      <canvas ref="canvas" id="canvas" width="768" height="1024"></canvas>
     </div>
   </div>
 </template>
@@ -51,8 +51,8 @@ export default {
   methods: {
     capture() {
       this.canvas = this.$refs.canvas;
-      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 800, 600);
-      this.image = canvas.toDataURL('image/png');
+      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 768, 1024);
+      this.image = canvas.toDataURL('image/jpeg');
     },
     changeCamera() {
       this.stopMediaTracks();
@@ -176,8 +176,8 @@ export default {
 
 #canvas {
   // display: none;
-  width: 480px;
-  height: 320px;
+  width: 320px;
+  height: 400px;
   background-color: #eee;
 }
 
