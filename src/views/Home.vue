@@ -10,18 +10,42 @@
 
         <rect id="masked" width="100%" height="100%" fill="#fff"></rect>
       </svg>
-      <video ref="video" id="video" width="768" height="1024" autoplay></video>
+
+      <video
+        ref="video"
+        id="video"
+        width="768"
+        height="1024"
+        autoplay
+        :style="image ? 'display: none;' : 'display:block;'"
+      ></video>
+
+      <canvas
+        ref="canvas"
+        id="canvas"
+        width="768"
+        height="1024"
+        :style="!image ? 'display: none;' : 'display:block;'"
+      ></canvas>
+
       <div class="controls">
         <select name="cameras" v-model="selectedCamera" @change="changeCamera">
           <option value="environment" selected>Câm. traseira</option>
           <option value="user">Câm. frontal</option>
         </select>
-        <button id="snap" @click="capture">Capturar</button>
-        <button id="send" @click="send" :disabled="image === ''">Enviar</button>
+
+        <button id="snap" @click="capture" :style="image ? 'display: none;' : 'display:block;'">
+          Capturar
+        </button>
+
+        <button id="send" @click="send" :disabled="image === ''">
+          {{ loading ? 'Enviando...' : 'Enviar' }}
+        </button>
+
+        <button id="clear" @click="image = ''" :style="!image ? 'display: none;' : 'display:block;'">
+          Nova foto
+        </button>
       </div>
-    </div>
-    <div class="box">
-      <canvas ref="canvas" id="canvas" width="768" height="1024"></canvas>
     </div>
   </div>
 </template>
@@ -40,7 +64,8 @@ export default {
     currentStream: false,
     video: {},
     canvas: {},
-    image: ''
+    image: '',
+    loading: false,
   }),
   mounted() {
     this.video = this.$refs.video;
@@ -175,7 +200,7 @@ export default {
 }
 
 #canvas {
-  // display: none;
+  position: absolute;
   width: 320px;
   height: 400px;
   background-color: #eee;
@@ -184,6 +209,11 @@ export default {
 li {
   display: inline;
   padding: 5px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
 }
 
 button, select {
