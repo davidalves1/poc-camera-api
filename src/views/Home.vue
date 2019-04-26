@@ -38,12 +38,12 @@
           Capturar
         </button>
 
-        <button id="send" @click="send" :disabled="image === ''">
-          {{ loading ? 'Enviando...' : 'Enviar' }}
-        </button>
-
         <button id="clear" @click="image = ''" :style="!image ? 'display: none;' : 'display:block;'">
           Nova foto
+        </button>
+
+        <button id="send" @click="send" :disabled="!image || loading">
+          {{ loading ? 'Enviando...' : 'Enviar' }}
         </button>
       </div>
     </div>
