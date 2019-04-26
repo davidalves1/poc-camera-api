@@ -1,22 +1,32 @@
 <template>
   <div class="home">
     <div class="box">
-      <video ref="video" id="video" width="640" height="480" autoplay></video>
+      <svg width="100%" height="100vh">
+        <mask id="maskLayer">
+          <rect width="100%" height="100%" fill="#fff" style="opacity: .8;"></rect>
+          <!-- <text x="8%" y="55%" id="info">DAFT CREATION</text> -->
+          <rect
+            id="document-model"
+            width="70%"
+            height="30%"
+            x="15%"
+            y="10%"
+          />
+        </mask>
+
+        <rect id="masked" width="100%" height="100%" fill="#f5f5f5"></rect>
+      </svg>
+      <video ref="video" id="video" width="800" height="600" autoplay></video>
       <button id="snap" @click="capture">Snap Photo</button>
-    </div>
-    <div class="box" style="text-align: left">
       <select name="cameras" v-model="selectedCamera" @change="changeCamera">
         <option value="environment" selected>Câm. traseira</option>
         <option value="user">Câm. frontal</option>
         <!-- <option v-for="(camera, index) in cameras" :value="camera.deviceId" :key="index">Camera {{ index + 1}}</option> -->
 
       </select>
-      <canvas ref="canvas" id="canvas"></canvas>
-      <ul>
-        <li v-for="(capture, i) in captures" :key="i">
-          <img :src="capture" height="50"/>
-        </li>
-      </ul>
+    </div>
+    <div class="box">
+      <canvas ref="canvas" id="canvas" width="800" height="600"></canvas>
     </div>
   </div>
 </template>
@@ -29,35 +39,26 @@ export default {
   name: 'home',
   components: {},
   data: () => ({
-    // fancingMode: 'environment',
     cameras: [],
     selectedCamera: 'environment',
-    currentStream: '',
+    currentStream: false,
     video: {},
     canvas: {},
-    captures: [],
+    image: '',
   }),
   mounted() {
     this.video = this.$refs.video;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-          this.cameras = devices.filter(device => {
-            return device.kind === 'videoinput';
-          });
-        });
       this.setCurrentCamera();
     }
   },
   methods: {
     capture() {
       this.canvas = this.$refs.canvas;
-      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 640, 480);
-      this.captures.push(canvas.toDataURL('image/png'));
+      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 800, 600);
+      this.image = canvas.toDataURL('image/png');
     },
     changeCamera() {
-      // console.log(`Você selecionou o device: ${this.selectedCamera}`);
-      // this.video.stop();
       this.stopMediaTracks();
       this.setCurrentCamera();
     },
@@ -79,7 +80,7 @@ export default {
         }
       }
 
-      if (video) {
+      if (video && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(options).then((stream) => {
           this.currentStream = stream;
           this.video.srcObject = stream;
@@ -120,18 +121,42 @@ export default {
     padding: 10px;
     box-sizing: border-box;
   }
+
   #video {
-    background-color: #000000;
+    background-color: #eee;
     width: 100%;
-    height: auto;
+    height: 480px;
+    position: absolute;
+    z-index: -1;
+
+    @media screen and (min-width: 768px) {
+      position: static;
+    }
   }
+
+  #document-model {
+    fill:#000;
+    stroke:#fff;
+    stroke-width:3;
+    border-radius: 3px;
+  }
+
+  #masked{
+    mask:url("#maskLayer");
+  }
+
   #canvas {
-    display: none;
+    // display: none;
+    width: 100%;
+    height: 480px;
+    background-color: #eee;
   }
+
   li {
-    // display: inline;
+    display: inline;
     padding: 5px;
   }
+
   button {
     margin: 1rem auto;
   }
