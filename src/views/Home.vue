@@ -5,7 +5,7 @@
         <mask id="maskLayer">
           <rect width="100%" height="100%" fill="#fff" style="opacity: .8;"></rect>
           <!-- <text x="8%" y="55%" id="info">DAFT CREATION</text> -->
-          <rect id="document-model" width="70%" height="30%" x="15%" y="35%"></rect>
+          <rect id="document-model" width="80%" height="45%" x="10%" y="22.5%"></rect>
         </mask>
 
         <rect id="masked" width="100%" height="100%" fill="#fff"></rect>
