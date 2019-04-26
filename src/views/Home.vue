@@ -14,8 +14,8 @@
       <video
         ref="video"
         id="video"
-        width="1080"
-        height="1920"
+        width="900"
+        height="1280"
         autoplay
         :style="image ? 'display: none;' : 'display:block;'"
       ></video>
@@ -23,7 +23,7 @@
       <canvas
         ref="canvas"
         id="canvas"
-        width="1080"
+        width="900"
         height="1280"
         :style="!image ? 'display: none;' : 'display:block;'"
       ></canvas>
@@ -76,7 +76,7 @@ export default {
   methods: {
     capture() {
       this.canvas = this.$refs.canvas;
-      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 1080, 1920);
+      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 900, 1280);
       this.image = canvas.toDataURL('image/jpeg');
     },
     changeCamera() {
