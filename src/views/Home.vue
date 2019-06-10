@@ -17,7 +17,6 @@
 <script>
 const Camera = () => import(/* webpackChunkName: "camera" */ './Camera');
 
-
 export default {
   name: 'home',
   components: { Camera },
