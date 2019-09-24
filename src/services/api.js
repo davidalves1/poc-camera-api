@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const devApiUrl = 'http://consigo.local/api';
-const prodApiUrl = 'https://stage-dinheirow.herokuapp.com/api';
+const devApiUrl = 'http://development.local/api';
+const prodApiUrl = 'https://production.local/api';
 
 const api = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? prodApiUrl : devApiUrl,
